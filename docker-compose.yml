@@ -25,6 +25,101 @@ services:
       - '2222:22'
       - '8080:8080'
     restart: always
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - jackett:/config
+    ports:
+      - '9117:9117'
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - radarr:/config
+      - //h/:/mnt/Downloads
+      - //i/:/mnt/data
+      - //j/:/mnt/data2
+      - //k/:/mnt/external
+    ports:
+      - '7878:7878'
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - sonarr:/config
+      - //h/:/mnt/Downloads
+      - //i/:/mnt/data
+      - //j/:/mnt/data2
+      - //k/:/mnt/external
+    ports:
+      - '8989:8989'
+  lidarr:
+    image: linuxserver/lidarr
+    container_name: lidarr
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - lidarr:/config
+      - //h/:/mnt/Downloads
+      - //i/:/mnt/data
+      - //j/:/mnt/data2
+      - //k/:/mnt/external
+    ports:
+      - '8686:8686'
+  hydra2:
+    image: linuxserver/hydra2
+    container_name: hydra2
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - hydra2:/config
+      - //h/:/mnt/Downloads
+      - //i/:/mnt/data
+      - //j/:/mnt/data2
+      - //k/:/mnt/external
+    ports:
+      - '5076:5076'
+  cardigann:
+    image: linuxserver/cardigann
+    container_name: cardigann
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - cardigann:/config
+      - //h/:/mnt/Downloads
+      - //i/:/mnt/data
+      - //j/:/mnt/data2
+      - //k/:/mnt/external
+    ports:
+      - '5060:5060'
+  nzbget:
+    image: linuxserver/nzbget
+    container_name: nzbget
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - nzbget:/config
+      - //h/:/mnt/Downloads
+      - //i/:/mnt/data
+      - //j/:/mnt/data2
+      - //k/:/mnt/external
+    ports:
+      - '6789:6789'
+
 
 volumes:
   qBittorrent:
+  jackett:
+  radarr:
+  sonarr:
+  lidarr:
+  hydra2:
+  cardigann:
+  nzbget:
