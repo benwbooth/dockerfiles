@@ -127,8 +127,7 @@ services:
     volumes:
       - heimdall:/config
     ports:
-      - '80:80'
-      - '443:443'
+      - '8001:80'
     restart: unless-stopped
   htpcmanager:
     image: linuxserver/htpcmanager
@@ -148,8 +147,19 @@ services:
     volumes:
       - muximux:/config
     ports:
-      - '8086:8086'
+      - '8002:80'
     restart: unless-stopped
+  organizr:
+    image: lsiocommunity/organizr
+    container_name: organizr
+    environment:
+      - TZ=America/Los_Angeles
+    volumes:
+      - organizr:/config
+    ports:
+      - '8000:80'
+    restart: unless-stopped
+
 
 volumes:
   qBittorrent:
@@ -163,3 +173,4 @@ volumes:
   heimdall:
   htpcmanager:
   muximux:
+  organizr:
