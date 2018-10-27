@@ -1,0 +1,30 @@
+# docker-compose build --build-arg sshpass= --build-arg vpnuser= --build-arg vpnpass=
+# docker-compose up -d
+version: '3'
+services:
+  qbittorrent: 
+    build: ./qbittorrent
+    image: benwbooth/qbittorrent
+    container_name: qbittorrent
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+    security_opt:
+      - seccomp:unconfined
+    #privileged: true
+    devices:
+      - /dev/net/tun
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - //h/:/mnt/Downloads
+      - //i/:/mnt/data
+      - //j/:/mnt/data2
+      - //k/:/mnt/external
+      - qBittorrent:/home/ben/.local/share/data/qBittorrent
+    ports: 
+      - '2222:22'
+      - '8080:8080'
+    restart: always
+
+volumes:
+  qBittorrent:

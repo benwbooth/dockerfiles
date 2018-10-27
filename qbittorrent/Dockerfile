@@ -54,18 +54,18 @@ RUN git clone https://aur.archlinux.org/trizen.git && \
 (cd trizen && makepkg -si --noconfirm)
 
 # clone dotfiles
-#RUN git init && \
-#git remote add origin https://github.com/benwbooth/dotfiles.git && \
-#git fetch --all && \
-#git reset --hard origin/master && \
-#git branch --set-upstream-to=origin/master master
+RUN git init && \
+git remote add origin https://github.com/benwbooth/dotfiles.git && \
+git fetch --all && \
+git reset --hard origin/master && \
+git branch --set-upstream-to=origin/master master
 
 # download scripts, config files and service files
 COPY qbittorrent.service qbittorrent-update-port.service ufw4vpn.service /etc/systemd/system/
 COPY qbittorrent-extract qbittorrent-update-port ufw4vpn /usr/bin/
-RUN mkdir -p ~/.config/qBittorrent
+RUN mkdir -p ~/.config/qBittorrent ~/.local/share/data/qBittorrent
 COPY qBittorrent.conf /home/ben/.config/qBittorrent/
-RUN sudo chown -R ben:ben ~/.config/qBittorrent
+RUN sudo chown -R ben:ben ~/.config/qBittorrent ~/.local/share/data/qBittorrent
 
 # set up systemd services
 RUN sudo systemctl enable sshd "openvpn-client@$region" qbittorrent qbittorrent-update-port ufw4vpn
