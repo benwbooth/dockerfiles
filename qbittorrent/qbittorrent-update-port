@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+#install -vf -m755 "$(readlink -f "$0")" /etc/NetworkManager/dispatcher.d/90-"$(basename "$0")"
+set -euxo pipefail
+export url=http://localhost:8080
+export username=${username:-admin}
+export password=${password:-adminadmin}
+export REGION=${REGION-Sweden}
+MAX_TRIES=20
+TIMEOUT=5
+
+# write output to log file
+#exec > >(perl -nle 'BEGIN{$d=shift} print "[$d] $_"' "$(date '+%Y-%m-%dT%H:%M:%S')" |tee -a "/var/log/$(basename "$0").log") 2>&1
+
+# get the port to use from PIA
+client_id=$(echo "$HOSTNAME" | sha256sum | tr -d " -")
+tries=0
+while [[ -z ${port-} && $tries -lt $MAX_TRIES ]]; do
+  export port="$(curl -m "$TIMEOUT" "http://209.222.18.222:2000/?client_id=$client_id" 2>/dev/null | perl -0777 -nle 'print [/"port":\s*([0-9]+)/]->[0]')"
+  if [[ -z $port || ! $port =~ ^[0-9]+$ ]]; then
+    if ((tries % 5 == 0)); then
+      systemctl restart "openvpn-client@$REGION"
+    fi
+    sleep 5
+  fi
+  tries=$((tries + 1))
+done
+if [[ -z $port || ! $port =~ ^[0-9]+$ ]]; then
+  echo "Could not read port from PIA: $port" >&2
+  exit 1
+fi
+
+# block the old port if it changed
+port_file=/etc/pia_port
+if [[ -e $port_file ]]; then
+  old_port=$(cat "$port_file")
+  if [[ -n $old_port && $old_port =~ ^[0-9]+$ && $old_port != $port ]]; then
+    ufw delete allow out "$old_port"
+  fi
+fi
+
+# unblock the new port
+ufw allow out "$port"
+
+# write the port to the port file
+echo "$port" >"$port_file"
+
+setport() (
+  set -euxo pipefail
+  echo 'Updating qbittorrent port via API'
+  SID=$(curl -s -i -q --data "username=$username&password=$password" "$url"/login |perl -0777 -ne 'print [/^Set-Cookie: SID=([^;]+);/ms]->[0]')
+  curl -s "$url"/command/setPreferences --cookie "SID=$SID" -d 'json={"listen_port":'"$port"', "max_ratio_enabled":true, "max_ratio":2.0}'
+)
+
+# set the new port in qbittorrent
+if perl -pe 's/^Connection\\PortRangeMin=([0-9]+)$/$ENV{port} ne $1? "Connection\\PortRangeMin=$ENV{port}":exit(1)/e' ~ben/.config/qBittorrent/qBittorrent.conf &>/dev/null; then
+  while ! setport; do
+    echo 'setport failed, trying again in 5 seconds...' >&2
+    sleep 5
+  done
+else
+  echo 'qbittorrent port is the same, nothing to do'
+fi
+
+echo "Changed PIA port to $port"
+exit 0

@@ -1,0 +1,11 @@
+[Unit]
+Description=ufw4vpn
+After=network.target
+
+[Service]
+Type=oneshot
+PrivateTmp=false
+ExecStart=/usr/bin/ufw4vpn
+
+[Install]
+WantedBy=multi-user.target

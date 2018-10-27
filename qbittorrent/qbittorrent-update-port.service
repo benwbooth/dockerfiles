@@ -1,0 +1,14 @@
+[Unit]
+Description=qbittorrent-update-port
+After=network.target
+
+[Service]
+Type=simple
+PrivateTmp=false
+ExecPre=/bin/sleep 20
+ExecStart=/usr/bin/qbittorrent-update-port
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

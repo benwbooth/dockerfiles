@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# get arguments
+src=$1
+if [[ -z $1 ]]; then
+    echo "Usage: $0 src" >&2
+    exit 1
+fi
+exec > >(perl -nle 'BEGIN{$d=shift} print "[$d] $_"' "$(date '+%Y-%m-%dT%H:%M:%S')" |tee -a "$0.log") 2>&1
+echo "Running command: $(printf '%q ' "$0" "$@")"
+set -x
+dest=/mnt/data/Downloads/$(basename "$src")
+rsync -a "${src%/}" "$dest"
+if [[ -d "$dest" ]]; then
+    cd "$dest"
+    find . -type f | perl -nle '/\.(tar|zip|cpio|deb|rpm|gem|7z|cab|lzh|rar|gz|bz2|lzma|xz|h)$/i && print' | xargs -trd \\n atool -x
+else
+    cd "$(dirname "$dest")"
+    find "$(basename "$dest")" -type f | perl -nle '/\.(tar|zip|cpio|deb|rpm|gem|7z|cab|lzh|rar|gz|bz2|lzma|xz|h)$/i && print' | xargs -trd \\n atool -x
+fi

@@ -1,0 +1,13 @@
+[Unit]
+Description=qbittorrent
+After=network.target ufw4vpn.service qbittorrent-update-port.service
+
+[Service]
+Type=simple
+PrivateTmp=false
+User=ben
+ExecStartPre=/bin/sleep 15
+ExecStart=/usr/bin/qbittorrent-nox
+
+[Install]
+WantedBy=multi-user.target
