@@ -1,15 +1,19 @@
-# docker build --build-arg 'sshpass=password' qbittorrent
-# docker run -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro -p 2222:22 <image>
+# docker build --build-arg sshpass= --build-arg vpnuser= --build-arg vpnpass= qbittorrent
+# docker run -d --cap-add=SYS_ADMIN --cap-add=NET_ADMIN --device=/dev/net/tun --security-opt=seccomp:unconfined -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v h:/:/mnt/Downloads -v i:/:/mnt/data -v j:/:/mnt/data2 -v k:/:/mnt/external -p 2222:22 2c318a5d1c14
+# docker run -d --privileged --device=/dev/net/tun -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v h:/:/mnt/Downloads -v i:/:/mnt/data -v j:/:/mnt/data2 -v k:/:/mnt/external -p 2222:22 2c318a5d1c14
 FROM base/archlinux:latest
 ENV container docker
-ARG sshpass=password
+ARG vpnuser
+ARG vpnpass
+ARG sshpass
+ARG region=Sweden
 
 # Update Arch
 RUN pacman --noconfirm -Sy archlinux-keyring
 RUN pacman --noconfirm -Sy pacman pacman-mirrorlist \
     && rm -rf /etc/pacman.d/mirrorlist.pacnew \
     && pacman-db-upgrade \
-    && pacman -Syu --noconfirm --needed git base base-devel openssh qbittorrent-nox atool cpio lha lzop p7zip unace unrar zip unzip sudo networkmanager networkmanager-openvpn ufw systemd-sysvcompat wget vim htop tmux
+    && pacman -Syu --noconfirm --needed git base base-devel openssh qbittorrent-nox atool cpio lha lzop p7zip unace unrar zip unzip sudo openvpn ufw systemd-sysvcompat wget vim htop tmux openresolv rsync
 
 # Clean services
 RUN (cd /usr/lib/systemd/system/sysinit.target.wants && for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
@@ -29,8 +33,14 @@ RUN sed -i \
         -e 's/^#*\(UsePAM\) .*/\1 no/' \
         /etc/ssh/sshd_config
 
+# install openvpn profile and connect
+RUN wget https://www.privateinternetaccess.com/openvpn/openvpn.zip && \
+sudo unzip openvpn.zip -d /etc/openvpn/client && \
+for f in /etc/openvpn/client/*.ovpn; do sed -i -e 's/^\(auth-user-pass\)/\1 \/etc\/openvpn\/login.conf/' "$f" && echo -e '\n# This updates the resolvconf with dns settings\nsetenv PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\nscript-security 2\nup /etc/openvpn/update-resolv-conf.sh\ndown /etc/openvpn/update-resolv-conf.sh\ndown-pre' >>"$f" && mv -v "$f" "$(f=${f%.ovpn}; echo "${f// /_}").conf"; done && \
+echo -e "$vpnuser\n$vpnpass" >/etc/openvpn/login.conf && chmod 600 /etc/openvpn/login.conf
+
 # set up systemd services
-RUN systemctl enable sshd NetworkManager qbittorrent-nox@ben
+RUN systemctl enable sshd "openvpn-client@$region" qbittorrent-nox@ben
 
 # add local user
 RUN useradd -m -s /bin/bash ben && \
@@ -48,15 +58,19 @@ git fetch --all && \
 git reset --hard origin/master && \
 git branch --set-upstream-to=origin/master master
 
+# install resolvconf update script
+RUN git clone https://github.com/masterkorp/openvpn-update-resolv-conf.git && \
+sudo mv openvpn-update-resolv-conf/update-resolv-conf.sh /etc/openvpn/
+
 # install trizen
 RUN git clone https://aur.archlinux.org/trizen.git && \
 (cd trizen && makepkg -si --noconfirm)
 
-# install openvpn profile and connect
-RUN wget https://www.privateinternetaccess.com/openvpn/openvpn.zip && \
-unzip openvpn.zip
+# set up VPN firewall script
 
-EXPOSE 22
+# set up open port script
+
+EXPOSE 22 8080
 USER root
 VOLUME ["/sys/fs/cgroup"]
 CMD ["/usr/sbin/init"]
