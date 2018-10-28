@@ -159,6 +159,15 @@ services:
     ports:
       - '8000:80'
     restart: unless-stopped
+  portainer:
+    image: portainer/portainer
+    container_name: portainer
+    volumes:
+      - portainer:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - '9000:9000'
+    restart: always
 
 
 volumes:
@@ -174,3 +183,4 @@ volumes:
   htpcmanager:
   muximux:
   organizr:
+  portainer:
