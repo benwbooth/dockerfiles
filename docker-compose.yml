@@ -16,17 +16,21 @@ services:
       - /dev/net/tun
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-      - //h/:/mnt/Downloads
-      - //i/:/mnt/data
-      - //j/:/mnt/data2
-      - //k/:/mnt/external
+      - /h:/mnt/Downloads
+      - /i:/mnt/data
+      - /j:/mnt/data2
+      - /k:/mnt/external
       - qBittorrent:/home/ben/.local/share/data/qBittorrent
     ports: 
       - '2222:22'
       - '8080:8080'
     restart: unless-stopped
   jackett:
-    image: linuxserver/jackett
+    build:
+      context: https://github.com/linuxserver/docker-jackett.git
+      args:
+        - BUILD_DATE=latest
+        - VERSION=latest
     container_name: jackett
     environment:
       - TZ=America/Los_Angeles
@@ -42,10 +46,10 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - radarr:/config
-      - //h/:/mnt/Downloads
-      - //i/:/mnt/data
-      - //j/:/mnt/data2
-      - //k/:/mnt/external
+      - /h:/mnt/Downloads
+      - /i:/mnt/data
+      - /j:/mnt/data2
+      - /k:/mnt/external
     ports:
       - '7878:7878'
     restart: unless-stopped
@@ -56,10 +60,10 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - sonarr:/config
-      - //h/:/mnt/Downloads
-      - //i/:/mnt/data
-      - //j/:/mnt/data2
-      - //k/:/mnt/external
+      - /h:/mnt/Downloads
+      - /i:/mnt/data
+      - /j:/mnt/data2
+      - /k:/mnt/external
     ports:
       - '8989:8989'
     restart: unless-stopped
@@ -70,10 +74,10 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - lidarr:/config
-      - //h/:/mnt/Downloads
-      - //i/:/mnt/data
-      - //j/:/mnt/data2
-      - //k/:/mnt/external
+      - /h:/mnt/Downloads
+      - /i:/mnt/data
+      - /j:/mnt/data2
+      - /k:/mnt/external
     ports:
       - '8686:8686'
     restart: unless-stopped
@@ -84,10 +88,10 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - hydra2:/config
-      - //h/:/mnt/Downloads
-      - //i/:/mnt/data
-      - //j/:/mnt/data2
-      - //k/:/mnt/external
+      - /h:/mnt/Downloads
+      - /i:/mnt/data
+      - /j:/mnt/data2
+      - /k:/mnt/external
     ports:
       - '5076:5076'
     restart: unless-stopped
@@ -98,10 +102,10 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - cardigann:/config
-      - //h/:/mnt/Downloads
-      - //i/:/mnt/data
-      - //j/:/mnt/data2
-      - //k/:/mnt/external
+      - /h:/mnt/Downloads
+      - /i:/mnt/data
+      - /j:/mnt/data2
+      - /k:/mnt/external
     ports:
       - '5060:5060'
     restart: unless-stopped
@@ -112,10 +116,10 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - nzbget:/config
-      - //h/:/mnt/Downloads
-      - //i/:/mnt/data
-      - //j/:/mnt/data2
-      - //k/:/mnt/external
+      - /h:/mnt/Downloads
+      - /i:/mnt/data
+      - /j:/mnt/data2
+      - /k:/mnt/external
     ports:
       - '6789:6789'
     restart: unless-stopped
