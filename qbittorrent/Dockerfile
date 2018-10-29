@@ -37,7 +37,7 @@ RUN sed -i \
 # install openvpn profile with DNS fix script
 RUN wget https://www.privateinternetaccess.com/openvpn/openvpn.zip && \
 sudo unzip openvpn.zip -d /etc/openvpn/client && \
-for f in /etc/openvpn/client/*.ovpn; do sed -i -e 's/^\(auth-user-pass\)/\1 \/etc\/openvpn\/login.conf/' "$f" && echo -e '\n# This updates the resolvconf with dns settings\nsetenv PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\nscript-security 2\nup /etc/openvpn/update-resolv-conf.sh\ndown /etc/openvpn/update-resolv-conf.sh\ndown-pre' >>"$f" && mv -v "$f" "$(f=${f%.ovpn}; echo "${f// /_}").conf"; done && \
+for f in /etc/openvpn/client/*; do [[ $f =~ [.]crt$ || $f =~ [.]pem$ ]] && continue; sed -i -e 's/^\(auth-user-pass\)/\1 \/etc\/openvpn\/login.conf/' "$f" && echo -e '\n# This updates the resolvconf with dns settings\nsetenv PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\nscript-security 2\nup /etc/openvpn/update-resolv-conf.sh\ndown /etc/openvpn/update-resolv-conf.sh\ndown-pre' >>"$f" && mv -v "$f" "$(f=${f%.ovpn}; echo "${f// /_}").conf"; done && \
 echo -e "$vpnuser\n$vpnpass" >/etc/openvpn/login.conf && chmod 600 /etc/openvpn/login.conf
 
 # add local user
