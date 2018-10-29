@@ -26,11 +26,7 @@ services:
       - '8080:8080'
     restart: unless-stopped
   jackett:
-    build:
-      context: https://github.com/linuxserver/docker-jackett.git
-      args:
-        - BUILD_DATE=latest
-        - VERSION=latest
+    image: linuxserver/jackett
     container_name: jackett
     environment:
       - TZ=US/Pacific
