@@ -213,6 +213,20 @@ services:
       - '8888:8888'
       - '55555:55555'
     restart: unless-stopped
+  booksonic:
+    image: linuxserver/booksonic
+    container_name: booksonic
+    volumes:
+      - booksonic:/config
+      - /h:/mnt/Downloads
+      - /i:/mnt/data
+      - /j:/mnt/data2
+      - /k:/mnt/external
+    environment:
+      - TZ=US/Pacific
+    ports:
+      - '4040:4040'
+    restart: unless-stopped
 
 volumes:
   qBittorrent:
@@ -231,3 +245,4 @@ volumes:
   emby:
   duplicati:
   resilio-sync:
+  booksonic:
