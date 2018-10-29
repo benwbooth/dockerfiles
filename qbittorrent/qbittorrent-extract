@@ -9,7 +9,11 @@ fi
 exec > >(perl -nle 'BEGIN{$d=shift} print "[$d] $_"' "$(date '+%Y-%m-%dT%H:%M:%S')" |tee -a "$0.log") 2>&1
 echo "Running command: $(printf '%q ' "$0" "$@")"
 set -x
-dest=/mnt/data/Downloads/$(basename "$src")
+if [[ ${2-} = movies || ${2-} = tv ]]; then
+  dest=/mnt/data/Downloads/$(basename "$src")
+else
+  dest=$src
+fi
 rsync -a "${src%/}" "$dest"
 if [[ -d "$dest" ]]; then
     cd "$dest"

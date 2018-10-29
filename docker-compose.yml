@@ -161,7 +161,7 @@ services:
     volumes:
       - organizr:/config
     ports:
-      - '8000:80'
+      - '80:80'
     restart: unless-stopped
   portainer:
     image: portainer/portainer
