@@ -186,6 +186,18 @@ services:
     ports:
       - '8096:8096'
     restart: unless-stopped
+  duplicati:
+    image: linuxserver/duplicati
+    container_name: duplicati
+    volumes:
+      - duplicati:/config
+      - /h:/mnt/Downloads
+      - /i:/mnt/data
+      - /j:/mnt/data2
+      - /k:/mnt/external
+    ports:
+      - '8200:8200'
+    restart: unless-stopped
 
 volumes:
   qBittorrent:
@@ -202,3 +214,4 @@ volumes:
   organizr:
   portainer:
   emby:
+  duplicati:
