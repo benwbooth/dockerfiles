@@ -61,14 +61,14 @@ git reset --hard origin/master && \
 git branch --set-upstream-to=origin/master master
 
 # download scripts, config files and service files
-COPY qbittorrent.service qbittorrent-update-port.service ufw4vpn.service /etc/systemd/system/
-COPY qbittorrent-extract qbittorrent-update-port ufw4vpn /usr/bin/
+COPY qbittorrent.service qbittorrent-update-port.service ufw4vpn.service openvpn-reconnect.service openvpn-reconnect.timer /etc/systemd/system/
+COPY qbittorrent-extract qbittorrent-update-port ufw4vpn openvpn-reconnect /usr/bin/
 RUN mkdir -p ~/.config/qBittorrent ~/.local/share/data/qBittorrent
 COPY qBittorrent.conf /home/ben/.config/qBittorrent/
 RUN sudo chown -R ben:ben ~/.config/qBittorrent ~/.local/share/data/qBittorrent
 
 # set up systemd services
-RUN sudo systemctl enable sshd "openvpn-client@$region" qbittorrent qbittorrent-update-port ufw4vpn
+RUN sudo systemctl enable sshd "openvpn-client@$region" qbittorrent qbittorrent-update-port ufw4vpn openvpn-reconnect
 
 # install resolvconf update script
 #RUN git clone https://github.com/masterkorp/openvpn-update-resolv-conf.git && \

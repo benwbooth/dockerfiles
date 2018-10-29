@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+REGION=${REGION-Sweden}
+if ! ping -q -c5 google.com > /dev/null; then
+  systemctl restart "openvpn-client@$REGION"
+  sleep 5
+  systemctl restart "qbittorrent-update-port"
+fi

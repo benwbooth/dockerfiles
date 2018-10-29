@@ -1,0 +1,8 @@
+[Unit]
+Description=openvpn-reconnect
+
+[Service]
+ExecStart=/usr/bin/openvpn-reconnect
+
+[Install]
+WantedBy=multi-user.target
