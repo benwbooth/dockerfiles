@@ -22,7 +22,7 @@ services:
       - /k:/mnt/external
       - qBittorrent:/home/ben/.local/share/data/qBittorrent
     ports: 
-      - '2222:22'
+      #- '2222:22'
       - '8080:8080'
     restart: unless-stopped
   jackett:
@@ -195,6 +195,8 @@ services:
       - /i:/mnt/data
       - /j:/mnt/data2
       - /k:/mnt/external
+    environment:
+      - TZ=US/Pacific
     ports:
       - '8200:8200'
     restart: unless-stopped
