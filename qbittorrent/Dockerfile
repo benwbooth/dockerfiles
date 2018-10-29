@@ -68,7 +68,7 @@ COPY qBittorrent.conf /home/ben/.config/qBittorrent/
 RUN sudo chown -R ben:ben ~/.config/qBittorrent ~/.local/share/data/qBittorrent
 
 # set up systemd services
-RUN sudo systemctl enable sshd "openvpn-client@$region" qbittorrent qbittorrent-update-port ufw4vpn openvpn-reconnect
+RUN sudo systemctl enable sshd "openvpn-client@$region" qbittorrent qbittorrent-update-port ufw4vpn openvpn-reconnect.timer
 
 # install resolvconf update script
 #RUN git clone https://github.com/masterkorp/openvpn-update-resolv-conf.git && \
