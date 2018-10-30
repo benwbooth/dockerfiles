@@ -2,7 +2,7 @@
 Description=clean-data.Downloads.timer
 
 [Timer]
-OnCalendar=daily
+OnCalendar=weekly
 Persistent=true     
 
 [Install]
