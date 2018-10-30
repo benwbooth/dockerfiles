@@ -6,7 +6,7 @@ if [[ -z $1 ]]; then
     echo "Usage: $0 src" >&2
     exit 1
 fi
-exec > >(logger -t "$(basename "$0")") 2>&1
+exec > >(logger -s -t "$(basename "$0")") 2>&1
 echo "Running command: $(printf '%q ' "$0" "$@")"
 set -x
 if [[ ${2-} = movies || ${2-} = tv ]]; then
