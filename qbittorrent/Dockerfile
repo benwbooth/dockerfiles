@@ -61,14 +61,14 @@ RUN git clone https://aur.archlinux.org/trizen.git && \
 #git branch --set-upstream-to=origin/master master
 
 # download scripts, config files and service files
-COPY qbittorrent.service qbittorrent-update-port.service ufw4vpn.service openvpn-reconnect.service openvpn-reconnect.timer /etc/systemd/system/
+COPY qbittorrent.service qbittorrent-update-port.service ufw4vpn.service openvpn-reconnect.service openvpn-reconnect.timer clean-data-Downloads.service clean-data-Downloads.timer /etc/systemd/system/
 COPY qbittorrent-extract qbittorrent-update-port ufw4vpn openvpn-reconnect /usr/bin/
 RUN mkdir -p ~/.config/qBittorrent ~/.local/share/data/qBittorrent
 COPY qBittorrent.conf /home/ben/.config/qBittorrent/
 RUN sudo chown -R ben:ben ~/.config/qBittorrent ~/.local/share/data/qBittorrent
 
 # set up systemd services
-RUN sudo systemctl enable "openvpn-client@$region" qbittorrent qbittorrent-update-port ufw4vpn openvpn-reconnect.timer
+RUN sudo systemctl enable "openvpn-client@$region" qbittorrent qbittorrent-update-port ufw4vpn openvpn-reconnect.timer clean-data-Downloads.timer
 
 # install resolvconf update script
 #RUN git clone https://github.com/masterkorp/openvpn-update-resolv-conf.git && \
