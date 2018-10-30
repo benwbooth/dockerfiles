@@ -27,12 +27,12 @@ rm -f /usr/lib/systemd/system/basic.target.wants/*;\
 rm -f /usr/lib/systemd/system/anaconda.target.wants/*;
 
 # configure ssh
-RUN sed -i \
-        -e 's/^#*\(PermitRootLogin\) .*/\1 no/' \
-        -e 's/^#*\(PasswordAuthentication\) .*/\1 yes/' \
-        -e 's/^#*\(PermitEmptyPasswords\) .*/\1 yes/' \
-        -e 's/^#*\(UsePAM\) .*/\1 no/' \
-        /etc/ssh/sshd_config
+#RUN sed -i \
+#        -e 's/^#*\(PermitRootLogin\) .*/\1 no/' \
+#        -e 's/^#*\(PasswordAuthentication\) .*/\1 yes/' \
+#        -e 's/^#*\(PermitEmptyPasswords\) .*/\1 yes/' \
+#        -e 's/^#*\(UsePAM\) .*/\1 no/' \
+#        /etc/ssh/sshd_config
 
 # install openvpn profile with DNS fix script
 RUN wget https://www.privateinternetaccess.com/openvpn/openvpn.zip && \
@@ -54,11 +54,11 @@ RUN git clone https://aur.archlinux.org/trizen.git && \
 (cd trizen && makepkg -si --noconfirm)
 
 # clone dotfiles
-RUN git init && \
-git remote add origin https://github.com/benwbooth/dotfiles.git && \
-git fetch --all && \
-git reset --hard origin/master && \
-git branch --set-upstream-to=origin/master master
+#RUN git init && \
+#git remote add origin https://github.com/benwbooth/dotfiles.git && \
+#git fetch --all && \
+#git reset --hard origin/master && \
+#git branch --set-upstream-to=origin/master master
 
 # download scripts, config files and service files
 COPY qbittorrent.service qbittorrent-update-port.service ufw4vpn.service openvpn-reconnect.service openvpn-reconnect.timer /etc/systemd/system/
@@ -68,14 +68,14 @@ COPY qBittorrent.conf /home/ben/.config/qBittorrent/
 RUN sudo chown -R ben:ben ~/.config/qBittorrent ~/.local/share/data/qBittorrent
 
 # set up systemd services
-RUN sudo systemctl enable sshd "openvpn-client@$region" qbittorrent qbittorrent-update-port ufw4vpn openvpn-reconnect.timer
+RUN sudo systemctl enable "openvpn-client@$region" qbittorrent qbittorrent-update-port ufw4vpn openvpn-reconnect.timer
 
 # install resolvconf update script
 #RUN git clone https://github.com/masterkorp/openvpn-update-resolv-conf.git && \
 #sudo mv openvpn-update-resolv-conf/update-resolv-conf.sh /etc/openvpn/
 COPY update-resolv-conf.sh /etc/openvpn/
 
-EXPOSE 22 8080
+EXPOSE 8080
 USER root
 VOLUME ["/sys/fs/cgroup"]
 CMD ["/usr/sbin/init"]
