@@ -17,7 +17,7 @@ RUN pacman --noconfirm -Sy pacman pacman-mirrorlist \
     && pacman -Syu --noconfirm --needed git base base-devel openssh qbittorrent-nox atool cpio lha lzop p7zip unace unrar zip unzip sudo openvpn ufw systemd-sysvcompat wget vim htop tmux openresolv rsync
 
 # set locale
-RUN echo 'en_US.UTF-8' >>/etc/locale.gen && \
+RUN echo 'en_US.UTF-8 UTF-8' >>/etc/locale.gen && \
 locale-gen && \
 echo 'LANG=en_US.UTF-8' >/etc/locale.conf
 
