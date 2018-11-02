@@ -6,6 +6,7 @@ services:
     build: ./qbittorrent
     image: benwbooth/qbittorrent
     container_name: qbittorrent
+    hostname: qbittorrent
     cap_add:
       - SYS_ADMIN
       - NET_ADMIN
@@ -27,7 +28,9 @@ services:
     restart: unless-stopped
   jackett:
     image: linuxserver/jackett
+    #build: https://github.com/linuxserver/docker-jackett.git
     container_name: jackett
+    hostname: jackett
     environment:
       - TZ=US/Pacific
     volumes:
@@ -38,6 +41,7 @@ services:
   radarr:
     image: linuxserver/radarr
     container_name: radarr
+    hostname: radarr
     environment:
       - TZ=US/Pacific
     volumes:
@@ -52,6 +56,7 @@ services:
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
+    hostname: sonarr
     environment:
       - TZ=US/Pacific
     volumes:
@@ -66,6 +71,7 @@ services:
   lidarr:
     image: linuxserver/lidarr
     container_name: lidarr
+    hostname: lidarr
     environment:
       - TZ=US/Pacific
     volumes:
@@ -80,6 +86,7 @@ services:
   hydra2:
     image: linuxserver/hydra2
     container_name: hydra2
+    hostname: hydra2
     environment:
       - TZ=US/Pacific
     volumes:
@@ -94,6 +101,7 @@ services:
   cardigann:
     image: linuxserver/cardigann
     container_name: cardigann
+    hostname: cardigann
     environment:
       - TZ=US/Pacific
     volumes:
@@ -108,6 +116,7 @@ services:
   nzbget:
     image: linuxserver/nzbget
     container_name: nzbget
+    hostname: nzbget
     environment:
       - TZ=US/Pacific
     volumes:
@@ -122,6 +131,7 @@ services:
   heimdall:
     image: linuxserver/heimdall
     container_name: heimdall
+    hostname: heimdall
     environment:
       - TZ=US/Pacific
     volumes:
@@ -132,6 +142,7 @@ services:
   htpcmanager:
     image: linuxserver/htpcmanager
     container_name: htpcmanager
+    hostname: htpcmanager
     environment:
       - TZ=US/Pacific
     volumes:
@@ -142,6 +153,7 @@ services:
   muximux:
     image: linuxserver/muximux
     container_name: muximux
+    hostname: muximux
     environment:
       - TZ=US/Pacific
     volumes:
@@ -152,6 +164,7 @@ services:
   organizr:
     image: lsiocommunity/organizr
     container_name: organizr
+    hostname: organizr
     environment:
       - TZ=US/Pacific
     volumes:
@@ -162,6 +175,7 @@ services:
   portainer:
     image: portainer/portainer
     container_name: portainer
+    hostname: portainer
     volumes:
       - portainer:/data
       - /var/run/docker.sock:/var/run/docker.sock
@@ -171,6 +185,7 @@ services:
   duplicati:
     image: linuxserver/duplicati
     container_name: duplicati
+    hostname: duplicati
     volumes:
       - duplicati:/config
       - /h:/mnt/Downloads
@@ -185,6 +200,7 @@ services:
   resilio-sync:
     image: linuxserver/resilio-sync
     container_name: resilio-sync
+    hostname: resilio-sync
     volumes:
       - resilio-sync:/config
       - /h:/mnt/Downloads
@@ -200,6 +216,7 @@ services:
   booksonic:
     image: linuxserver/booksonic
     container_name: booksonic
+    hostname: booksonic
     volumes:
       - booksonic:/config
       - /h:/mnt/Downloads
@@ -226,7 +243,6 @@ volumes:
   muximux:
   organizr:
   portainer:
-  emby:
   duplicati:
   resilio-sync:
   booksonic:
