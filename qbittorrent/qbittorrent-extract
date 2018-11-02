@@ -11,7 +11,7 @@ echo "Running command: $(printf '%q ' "$0" "$@")"
 set -x
 if [[ ${2-} = movies || ${2-} = tv ]]; then
   dest=/mnt/data/Downloads/$(basename "$src")
-  cp -v "${src%/}" "$dest"
+  cp -rv "${src%/}" "$dest"
 else
   dest=$src
 fi

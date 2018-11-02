@@ -16,6 +16,11 @@ RUN pacman --noconfirm -Sy pacman pacman-mirrorlist \
     && pacman-db-upgrade \
     && pacman -Syu --noconfirm --needed git base base-devel openssh qbittorrent-nox atool cpio lha lzop p7zip unace unrar zip unzip sudo openvpn ufw systemd-sysvcompat wget vim htop tmux openresolv rsync
 
+# set locale
+RUN echo 'en_US.UTF-8' >>/etc/locale.gen && \
+locale-gen && \
+echo 'LANG=en_US.UTF-8' >/etc/locale.conf
+
 # fix systemd services
 RUN (cd /usr/lib/systemd/system/sysinit.target.wants && for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
 rm -f /usr/lib/systemd/system/multi-user.target.wants/*;\
