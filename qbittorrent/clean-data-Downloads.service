@@ -2,7 +2,7 @@
 Description=clean-data-Downloads
 
 [Service]
-ExecStart=bash -xc 'rm -rv /mnt/data/Downloads/*'
+ExecStart=/usr/bin/clean-data-Downloads
 
 [Install]
 WantedBy=multi-user.target

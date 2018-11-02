@@ -62,7 +62,7 @@ RUN git clone https://aur.archlinux.org/trizen.git && \
 
 # download scripts, config files and service files
 COPY qbittorrent.service qbittorrent-update-port.service ufw4vpn.service openvpn-reconnect.service openvpn-reconnect.timer clean-data-Downloads.service clean-data-Downloads.timer /etc/systemd/system/
-COPY qbittorrent-extract qbittorrent-update-port ufw4vpn openvpn-reconnect /usr/bin/
+COPY qbittorrent-extract qbittorrent-update-port ufw4vpn openvpn-reconnect clean-data-Downloads /usr/bin/
 RUN mkdir -p ~/.config/qBittorrent ~/.local/share/data/qBittorrent
 COPY qBittorrent.conf /home/ben/.config/qBittorrent/
 RUN sudo chown -R ben:ben ~/.config/qBittorrent ~/.local/share/data/qBittorrent
