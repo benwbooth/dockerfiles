@@ -228,6 +228,34 @@ services:
     ports:
       - '4040:4040'
     restart: unless-stopped
+  volumerize:
+    image: blacklabelops/volumerize
+    container_name: volumerize
+    hostname: volumerize
+    volumes:
+      - /k/volumerize-backups:/backup
+      - volumerize-cache:/volumerize-cache
+      - /var/run/docker.sock:/var/run/docker.sock
+      - qBittorrent:/source/qBittorrent:ro
+      - jackett:/source/jackett:ro
+      - radarr:/source/radarr:ro
+      - sonarr:/source/sonarr:ro
+      - lidarr:/source/lidarr:ro
+      - hydra2:/source/hydra2:ro
+      - cardigann:/source/cardigann:ro
+      - heimdall:/source/heimdall:ro
+      - htpcmanager:/source/htpcmanager:ro
+      - muximux:/source/muximux:ro
+      - organizr:/source/organizr:ro
+      - portainer:/source/portainer:ro
+      - duplicati:/source/duplicati:ro
+      - resilio-sync:/source/resilio-sync:ro
+      - booksonic:/source/booksonic:ro
+    environment:
+      - TZ=US/Pacific
+      - VOLUMERIZE_SOURCE=/source
+      - VOLUMERIZE_TARGET=file:///backup
+      - VOLUMERIZE_CONTAINERS=qbittorrent jackett radarr sonarr lidarr hydra2 cardigann heimdall htpcmanager muximux organizr portainer duplicati resilio-sync booksonic
 
 volumes:
   qBittorrent:
@@ -246,3 +274,4 @@ volumes:
   duplicati:
   resilio-sync:
   booksonic:
+  volumerize-cache:
