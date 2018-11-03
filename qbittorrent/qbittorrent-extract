@@ -11,11 +11,11 @@ echo "Running command: $(printf '%q ' "$0" "$@")"
 set -x
 dest=/mnt/data/Downloads/$(basename "$src")
 cp -rv "${src%/}" "$dest.tmp$$"
-mv -v "$dest.tmp$$" "$dest"
-if [[ -d "$dest" ]]; then
-    cd "$dest"
+if [[ -d "$dest.tmp$$" ]]; then
+    cd "$dest.tmp$$"
     find . -type f | perl -nle '/\.(tar|zip|cpio|deb|rpm|gem|7z|cab|lzh|rar|gz|bz2|lzma|xz|h)$/i && print' | xargs -trd \\n atool -x
 else
-    cd "$(dirname "$dest")"
-    find "$(basename "$dest")" -type f | perl -nle '/\.(tar|zip|cpio|deb|rpm|gem|7z|cab|lzh|rar|gz|bz2|lzma|xz|h)$/i && print' | xargs -trd \\n atool -x
+    cd "$(dirname "$dest.tmp$$")"
+    find "$(basename "$dest.tmp$$")" -type f | perl -nle '/\.(tar|zip|cpio|deb|rpm|gem|7z|cab|lzh|rar|gz|bz2|lzma|xz|h)$/i && print' | xargs -trd \\n atool -x
 fi
+mv -v "$dest.tmp$$" "$dest"
