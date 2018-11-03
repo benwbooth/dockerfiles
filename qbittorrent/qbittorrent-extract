@@ -9,13 +9,22 @@ fi
 exec > >(logger -s -t "$(basename "$0")") 2>&1
 echo "Running command: $(printf '%q ' "$0" "$@")"
 set -x
-dest=/mnt/data/Downloads/$(basename "$src")
-cp -rv "${src%/}" "$dest.tmp$$"
-if [[ -d "$dest.tmp$$" ]]; then
-    cd "$dest.tmp$$"
+dest=$src
+desttmp=$src
+if [[ ${2-} = movies -o ${2-} = tv -o ${2-} = '' ]]; then
+  dest=/mnt/data/Downloads/$(basename "$src")
+elif [[ ${2-} = sports ]]; then
+  dest=/mnt/data/Sports
+fi
+if [[ $dest != $src ]]; then
+  desttmp=$dest.tmp$$
+  cp -rv "${src%/}" "$dest.tmp$$"
+fi
+if [[ -d $desttmp ]]; then
+    cd "$desttmp"
     find . -type f | perl -nle '/\.(tar|zip|cpio|deb|rpm|gem|7z|cab|lzh|rar|gz|bz2|lzma|xz|h)$/i && print' | xargs -trd \\n atool -x
 else
-    cd "$(dirname "$dest.tmp$$")"
-    find "$(basename "$dest.tmp$$")" -type f | perl -nle '/\.(tar|zip|cpio|deb|rpm|gem|7z|cab|lzh|rar|gz|bz2|lzma|xz|h)$/i && print' | xargs -trd \\n atool -x
+    cd "$(dirname "$desttmp")"
+    find "$(basename "$desttmp")" -type f | perl -nle '/\.(tar|zip|cpio|deb|rpm|gem|7z|cab|lzh|rar|gz|bz2|lzma|xz|h)$/i && print' | xargs -trd \\n atool -x
 fi
-mv -v "$dest.tmp$$" "$dest"
+[[ $desttmp != $dest ]] && mv -v "$desttmp" "$dest"
