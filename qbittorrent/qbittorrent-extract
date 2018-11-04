@@ -11,7 +11,7 @@ echo "Running command: $(printf '%q ' "$0" "$@")"
 set -x
 dest=$src
 desttmp=$src
-if [[ ${2-} = movies -o ${2-} = tv ]]; then
+if [[ ${2-} = movies || ${2-} = tv ]]; then
   dest=/mnt/data/Downloads/$(basename "$src")
 elif [[ ${2-} = sports ]]; then
   dest=/mnt/data/Sports
