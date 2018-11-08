@@ -290,6 +290,12 @@ services:
       - VOLUMERIZE_SOURCE=/source
       - VOLUMERIZE_TARGET=file:///backup
       - VOLUMERIZE_CONTAINERS=qbittorrent jackett radarr sonarr lidarr hydra2 cardigann heimdall htpcmanager muximux organizr portainer duplicati resilio-sync booksonic bazaar flexget
+  watchtower:
+    image: v2tec/watchtower
+    container_name: watchtower
+    hostname: watchtower
+    volumes: 
+      - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   qBittorrent:
