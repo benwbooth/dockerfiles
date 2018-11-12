@@ -260,6 +260,36 @@ services:
     ports:
       - '5050:5050'
     restart: unless-stopped
+  headphones:
+    image: linuxserver/headphones
+    container_name: headphones
+    hostname: headphones
+    environment:
+      - TZ=US/Pacific
+    volumes:
+      - headphones:/config
+      - /h:/mnt/Downloads
+      - /i:/mnt/data
+      - /j:/mnt/data2
+      - /k:/mnt/external
+    ports:
+      - '8181:8181'
+    restart: unless-stopped
+  mylar:
+    image: linuxserver/mylar
+    container_name: mylar
+    hostname: mylar
+    environment:
+      - TZ=US/Pacific
+    volumes:
+      - mylar
+      - /h:/mnt/Downloads
+      - /i:/mnt/data
+      - /j:/mnt/data2
+      - /k:/mnt/external
+    ports:
+      - '8090:8090'
+    restart: unless-stopped
   volumerize:
     image: blacklabelops/volumerize
     container_name: volumerize
@@ -285,11 +315,13 @@ services:
       - booksonic:/source/booksonic:ro
       - bazaar:/source/bazaar:ro
       - flexget:/source/flexget:ro
+      - headphones:/source/headphones:ro
+      - mylar:/source/mylar:ro
     environment:
       - TZ=US/Pacific
       - VOLUMERIZE_SOURCE=/source
       - VOLUMERIZE_TARGET=file:///backup
-      - VOLUMERIZE_CONTAINERS=qbittorrent jackett radarr sonarr lidarr hydra2 cardigann heimdall htpcmanager muximux organizr portainer duplicati resilio-sync booksonic bazaar flexget
+      - VOLUMERIZE_CONTAINERS=qbittorrent jackett radarr sonarr lidarr hydra2 cardigann heimdall htpcmanager muximux organizr portainer duplicati resilio-sync booksonic bazaar flexget headphones mylar
   watchtower:
     image: v2tec/watchtower
     container_name: watchtower
@@ -317,3 +349,5 @@ volumes:
   bazaar:
   flexget:
   volumerize-cache:
+  headphones:
+  mylar:
