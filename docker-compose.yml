@@ -17,10 +17,9 @@ services:
       - /dev/net/tun
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-      - /h:/mnt/Downloads
-      - /i:/mnt/data
-      - /j:/mnt/data2
-      - /k:/mnt/external
+      - /Mounts/Downloads:/mnt/Downloads
+      - /Mounts/data:/mnt/data
+      - /Mounts/external:/mnt/external
       - qBittorrent:/home/ben/.local/share/data/qBittorrent
     ports: 
       #- '2222:22'
@@ -46,10 +45,9 @@ services:
       - TZ=US/Pacific
     volumes:
       - radarr:/config
-      - /h:/mnt/Downloads
-      - /i:/mnt/data
-      - /j:/mnt/data2
-      - /k:/mnt/external
+      - /Mounts/Downloads:/mnt/Downloads
+      - /Mounts/data:/mnt/data
+      - /Mounts/external:/mnt/external
     ports:
       - '7878:7878'
     restart: unless-stopped
@@ -61,10 +59,9 @@ services:
       - TZ=US/Pacific
     volumes:
       - sonarr:/config
-      - /h:/mnt/Downloads
-      - /i:/mnt/data
-      - /j:/mnt/data2
-      - /k:/mnt/external
+      - /Mounts/Downloads:/mnt/Downloads
+      - /Mounts/data:/mnt/data
+      - /Mounts/external:/mnt/external
     ports:
       - '8989:8989'
     restart: unless-stopped
@@ -76,10 +73,9 @@ services:
       - TZ=US/Pacific
     volumes:
       - lidarr:/config
-      - /h:/mnt/Downloads
-      - /i:/mnt/data
-      - /j:/mnt/data2
-      - /k:/mnt/external
+      - /Mounts/Downloads:/mnt/Downloads
+      - /Mounts/data:/mnt/data
+      - /Mounts/external:/mnt/external
     ports:
       - '8686:8686'
     restart: unless-stopped
@@ -91,10 +87,9 @@ services:
       - TZ=US/Pacific
     volumes:
       - hydra2:/config
-      - /h:/mnt/Downloads
-      - /i:/mnt/data
-      - /j:/mnt/data2
-      - /k:/mnt/external
+      - /Mounts/Downloads:/mnt/Downloads
+      - /Mounts/data:/mnt/data
+      - /Mounts/external:/mnt/external
     ports:
       - '5076:5076'
     restart: unless-stopped
@@ -106,10 +101,9 @@ services:
       - TZ=US/Pacific
     volumes:
       - cardigann:/config
-      - /h:/mnt/Downloads
-      - /i:/mnt/data
-      - /j:/mnt/data2
-      - /k:/mnt/external
+      - /Mounts/Downloads:/mnt/Downloads
+      - /Mounts/data:/mnt/data
+      - /Mounts/external:/mnt/external
     ports:
       - '5060:5060'
     restart: unless-stopped
@@ -121,10 +115,9 @@ services:
       - TZ=US/Pacific
     volumes:
       - nzbget:/config
-      - /h:/mnt/Downloads
-      - /i:/mnt/data
-      - /j:/mnt/data2
-      - /k:/mnt/external
+      - /Mounts/Downloads:/mnt/Downloads
+      - /Mounts/data:/mnt/data
+      - /Mounts/external:/mnt/external
     ports:
       - '6789:6789'
     restart: unless-stopped
@@ -188,10 +181,9 @@ services:
     hostname: duplicati
     volumes:
       - duplicati:/config
-      - /h:/mnt/Downloads
-      - /i:/mnt/data
-      - /j:/mnt/data2
-      - /k:/mnt/external
+      - /Mounts/Downloads:/mnt/Downloads
+      - /Mounts/data:/mnt/data
+      - /Mounts/external:/mnt/external
     environment:
       - TZ=US/Pacific
     ports:
@@ -203,10 +195,9 @@ services:
     hostname: resilio-sync
     volumes:
       - resilio-sync:/config
-      - /h:/mnt/Downloads
-      - /i:/mnt/data
-      - /j:/mnt/data2
-      - /k:/mnt/external
+      - /Mounts/Downloads:/mnt/Downloads
+      - /Mounts/data:/mnt/data
+      - /Mounts/external:/mnt/external
     environment:
       - TZ=US/Pacific
     ports:
@@ -219,10 +210,9 @@ services:
     hostname: booksonic
     volumes:
       - booksonic:/config
-      - /h:/mnt/Downloads
-      - /i:/mnt/data
-      - /j:/mnt/data2
-      - /k:/mnt/external
+      - /Mounts/Downloads:/mnt/Downloads
+      - /Mounts/data:/mnt/data
+      - /Mounts/external:/mnt/external
     environment:
       - TZ=US/Pacific
     ports:
@@ -236,10 +226,9 @@ services:
       - TZ=US/Pacific
     volumes:
       - bazaar:/config
-      - /h:/mnt/Downloads
-      - /i:/mnt/data
-      - /j:/mnt/data2
-      - /k:/mnt/external
+      - /Mounts/Downloads:/mnt/Downloads
+      - /Mounts/data:/mnt/data
+      - /Mounts/external:/mnt/external
     ports:
       - '6767:6767'
     restart: unless-stopped
@@ -253,10 +242,9 @@ services:
       - WEB_PASSWD=
     volumes:
       - flexget:/config
-      - /h:/mnt/Downloads
-      - /i:/mnt/data
-      - /j:/mnt/data2
-      - /k:/mnt/external
+      - /Mounts/Downloads:/mnt/Downloads
+      - /Mounts/data:/mnt/data
+      - /Mounts/external:/mnt/external
     ports:
       - '5050:5050'
     restart: unless-stopped
@@ -268,10 +256,9 @@ services:
       - TZ=US/Pacific
     volumes:
       - headphones:/config
-      - /h:/mnt/Downloads
-      - /i:/mnt/data
-      - /j:/mnt/data2
-      - /k:/mnt/external
+      - /Mounts/Downloads:/mnt/Downloads
+      - /Mounts/data:/mnt/data
+      - /Mounts/external:/mnt/external
     ports:
       - '8181:8181'
     restart: unless-stopped
@@ -282,52 +269,27 @@ services:
     environment:
       - TZ=US/Pacific
     volumes:
-      - mylar
-      - /h:/mnt/Downloads
-      - /i:/mnt/data
-      - /j:/mnt/data2
-      - /k:/mnt/external
+      - mylar:/config
+      - /Mounts/Downloads:/mnt/Downloads
+      - /Mounts/data:/mnt/data
+      - /Mounts/external:/mnt/external
     ports:
       - '8090:8090'
     restart: unless-stopped
-  volumerize:
-    image: blacklabelops/volumerize
-    container_name: volumerize
-    hostname: volumerize
-    volumes:
-      - /k/volumerize-backups:/backup
-      - volumerize-cache:/volumerize-cache
-      - /var/run/docker.sock:/var/run/docker.sock
-      - qBittorrent:/source/qBittorrent:ro
-      - jackett:/source/jackett:ro
-      - radarr:/source/radarr:ro
-      - sonarr:/source/sonarr:ro
-      - lidarr:/source/lidarr:ro
-      - hydra2:/source/hydra2:ro
-      - cardigann:/source/cardigann:ro
-      - heimdall:/source/heimdall:ro
-      - htpcmanager:/source/htpcmanager:ro
-      - muximux:/source/muximux:ro
-      - organizr:/source/organizr:ro
-      - portainer:/source/portainer:ro
-      - duplicati:/source/duplicati:ro
-      - resilio-sync:/source/resilio-sync:ro
-      - booksonic:/source/booksonic:ro
-      - bazaar:/source/bazaar:ro
-      - flexget:/source/flexget:ro
-      - headphones:/source/headphones:ro
-      - mylar:/source/mylar:ro
+  ombi:
+    image: linuxserver/ombi
+    container_name: ombi
+    hostname: ombi
     environment:
       - TZ=US/Pacific
-      - VOLUMERIZE_SOURCE=/source
-      - VOLUMERIZE_TARGET=file:///backup
-      - VOLUMERIZE_CONTAINERS=qbittorrent jackett radarr sonarr lidarr hydra2 cardigann heimdall htpcmanager muximux organizr portainer duplicati resilio-sync booksonic bazaar flexget headphones mylar
-  watchtower:
-    image: v2tec/watchtower
-    container_name: watchtower
-    hostname: watchtower
-    volumes: 
-      - /var/run/docker.sock:/var/run/docker.sock
+    volumes:
+      - ombi:/config
+      - /Mounts/Downloads:/mnt/Downloads
+      - /Mounts/data:/mnt/data
+      - /Mounts/external:/mnt/external
+    ports:
+      - '3579:3579'
+    restart: unless-stopped
 
 volumes:
   qBittorrent:
@@ -348,6 +310,6 @@ volumes:
   booksonic:
   bazaar:
   flexget:
-  volumerize-cache:
   headphones:
   mylar:
+  ombi:
