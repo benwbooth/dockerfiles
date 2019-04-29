@@ -15,6 +15,9 @@ if [[ ${2-} = movies || ${2-} = tv ]]; then
   dest=/mnt/data/Downloads/$(basename "$src")
 elif [[ ${2-} = sports ]]; then
   dest=/mnt/data/Sports
+else
+  echo "Did not recognize category ${2-}; ignoring" >&2
+  exit 0
 fi
 if [[ $dest != $src ]]; then
   desttmp=$dest.tmp$$

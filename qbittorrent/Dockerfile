@@ -1,7 +1,7 @@
 # docker build --build-arg sshpass= --build-arg vpnuser= --build-arg vpnpass= -t benwbooth/qbittorrent qbittorrent
 # docker run -d --name qbittorrent --cap-add=SYS_ADMIN --cap-add=NET_ADMIN --device=/dev/net/tun --security-opt=seccomp:unconfined -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v h:/:/mnt/Downloads -v i:/:/mnt/data -v j:/:/mnt/data2 -v k:/:/mnt/external -p 2222:22 -p 8080:8080 benwbooth/qbittorrent
 # docker run -d --name qbittorrent --privileged --device=/dev/net/tun -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v h:/:/mnt/Downloads -v i:/:/mnt/data -v j:/:/mnt/data2 -v k:/:/mnt/external -p 2222:22 -p 8080:8080 benwbooth/qbittorrent
-FROM base/archlinux:latest
+FROM archlinux/base
 ENV container docker
 ARG vpnuser
 ARG vpnpass
